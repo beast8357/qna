@@ -37,11 +37,11 @@ class QuestionsController < ApplicationController
 
   private
 
+  helper_method :question
+
   def question
     @question ||= params[:id] ? Question.find(params[:id]) : Question.new
   end
-
-  helper_method :question
 
   def question_params
     params.require(:question).permit(:title, :body)
