@@ -14,6 +14,6 @@ class AnswersController < ApplicationController
   end
 
   def answer
-    current_question.answers.find(params[:id])
+    params[:id] ? current_question.answers.find(params[:id]) : current_question.answers.new
   end
 end
