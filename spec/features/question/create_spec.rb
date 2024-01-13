@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User can create a question', %q{
-  In order to get an answer from the comunity
+  In order to get an answer from the community
   As an authenticate user
   I'd like to be able to ask a question
 } do
