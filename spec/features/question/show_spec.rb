@@ -5,8 +5,9 @@ feature 'User can view the question and the answers to it', %q{
   I'd like to be able to view the question
   And view the answers to that question on the same page
 } do
-  given(:question) { create(:question) }
-  given(:answers) { create_list(:answer, 3, question: question) }
+  given(:user) { create(:user) }
+  given(:question) { create(:question, author: user) }
+  given(:answers) { create_list(:answer, 3, question: question, author: user) }
 
   describe 'User' do
     background { visit question_path(question) }
