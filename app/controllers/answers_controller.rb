@@ -17,6 +17,11 @@ class AnswersController < ApplicationController
     end
   end
 
+  def destroy
+    answer.destroy
+    redirect_to question_path(current_question), notice: 'The answer has been successfully deleted.'
+  end
+
   private
 
   helper_method :current_question, :answer
