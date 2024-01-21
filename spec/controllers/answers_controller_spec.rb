@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let(:question) { create(:question, author: user) }
 
   describe 'GET #show' do
-    let(:answer) { create(:answer, question: question) }
+    let(:answer) { create(:answer, question: question, author: user) }
 
     before { get :show, params: { id: answer, question_id: question } }
 
