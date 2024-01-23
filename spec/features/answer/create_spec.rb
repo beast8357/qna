@@ -17,9 +17,12 @@ feature 'Authenticated user can answer the question', %q{
       fill_in 'Body', with: 'Some answer'
       click_on 'Answer'
 
+      expect(current_path).to eq question_path(question)
       expect(page).to have_content 'Your answer has been successfully created.'
-      expect(page).to have_content question.title
-      expect(page).to have_content question.body
+
+      within '.answers' do
+        expect(page).to have_content 'Some answer'
+      end
     end
 
     scenario 'tries to answer the question with errors' do
