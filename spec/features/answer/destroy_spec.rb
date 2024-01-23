@@ -7,7 +7,6 @@ feature 'The answer can only be deleted by the author', %q{
 } do
   given(:users) { create_list(:user, 2) }
   given(:question) { create(:question, author: users.first) }
-  given(:question_2) { create(:question, author: users.last) }
   given(:answer) { create(:answer, question: question, author: users.first) }
   given(:answer_2) { create(:answer, question: question, author: users.last) }
 
