@@ -14,7 +14,7 @@ feature 'Authenticated user can answer the question', %q{
     end
 
     scenario 'tries to answer the question' do
-      fill_in 'Body', with: 'Some answer'
+      fill_in 'Your answer', with: 'Some answer'
       click_on 'Answer'
 
       expect(current_path).to eq question_path(question)
@@ -36,7 +36,7 @@ feature 'Authenticated user can answer the question', %q{
     background { visit question_path(question) }
 
     scenario 'tries to answer the question' do
-      fill_in 'Body', with: 'Some answer'
+      fill_in 'Your answer', with: 'Some answer'
       click_on 'Answer'
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
