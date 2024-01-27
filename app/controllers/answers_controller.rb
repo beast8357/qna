@@ -14,7 +14,8 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to current_question, notice: 'Your answer has been successfully created.'
     else
-      redirect_to current_question, alert: "Body can't be blank."
+      @question = current_question
+      render "questions/show"
     end
   end
 

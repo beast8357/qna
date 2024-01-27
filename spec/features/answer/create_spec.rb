@@ -28,7 +28,7 @@ feature 'Authenticated user can answer the question', %q{
     scenario 'tries to answer the question with errors' do
       click_on 'Answer'
 
-      expect(page).to have_content "Body can't be blank."
+      expect(page).to have_content "Body can't be blank"
     end
   end
 
