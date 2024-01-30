@@ -8,20 +8,13 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = current_question.answers.new(answer_params)
-    @answer.author = current_user
-
-    if @answer.save
-      redirect_to current_question, notice: 'Your answer has been successfully created.'
-    else
-      @question = current_question
-      render "questions/show"
-    end
+    @question = current_question
+    @answer = @question.answers.create(answer_params.merge(author: current_user))
   end
 
   def destroy
     answer.destroy
-    redirect_to question_path(current_question), notice: 'The answer has been successfully deleted.'
+    redirect_to question_path(current_question)
   end
 
   private

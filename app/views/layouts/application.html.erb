@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>QnA</title>
+    <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -14,6 +15,8 @@
     <%= render "shared/nav" unless current_page?(new_user_session_path) %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

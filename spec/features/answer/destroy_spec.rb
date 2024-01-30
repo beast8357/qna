@@ -16,8 +16,6 @@ feature 'The answer can only be deleted by the author', %q{
     scenario 'tries to delete their own answer' do
       visit question_answer_path(question, answer)
       click_on 'Delete'
-
-      expect(page).to have_content 'The answer has been successfully deleted.'
     end
 
     scenario "tries to delete someone else's answer" do

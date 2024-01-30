@@ -7,5 +7,4 @@ p= @question.body
 = render 'answers/form'
 
 .answers
-  - @question.answers.each do |answer|
-    p= answer.body
+  = render @question.answers

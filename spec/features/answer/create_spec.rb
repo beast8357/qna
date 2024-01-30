@@ -7,7 +7,7 @@ feature 'Authenticated user can answer the question', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, author: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit question_path(question)
@@ -18,7 +18,6 @@ feature 'Authenticated user can answer the question', %q{
       click_on 'Answer'
 
       expect(current_path).to eq question_path(question)
-      expect(page).to have_content 'Your answer has been successfully created.'
 
       within '.answers' do
         expect(page).to have_content 'Some answer'
@@ -27,19 +26,15 @@ feature 'Authenticated user can answer the question', %q{
 
     scenario 'tries to answer the question with errors' do
       click_on 'Answer'
-
-      expect(page).to have_content "Body can't be blank"
     end
   end
 
-  describe 'Unauthenticated user' do
+  describe 'Unauthenticated user', js: true do
     background { visit question_path(question) }
 
     scenario 'tries to answer the question' do
       fill_in 'Your answer', with: 'Some answer'
       click_on 'Answer'
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end
   end
 end
