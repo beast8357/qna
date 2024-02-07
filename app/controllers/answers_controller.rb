@@ -12,6 +12,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.create(answer_params.merge(author: current_user))
   end
 
+  def update
+    answer.update(answer_params)
+  end
+
   def destroy
     answer.destroy
     redirect_to question_path(current_question)

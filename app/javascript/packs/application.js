@@ -11,6 +11,8 @@ import "jquery"
 window.jQuery = $;
 window.$ = $;
 
+import "./answers"
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
