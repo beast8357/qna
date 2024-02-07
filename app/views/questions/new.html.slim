@@ -1,10 +1,13 @@
 = render 'shared/errors', resource: question
 
-= form_with model: question, local: false do |f|
-  p
+p
+  = form_with model: question, local: false do |f|
     = f.label :title
+    br
     = f.text_field :title
-  p
+    br
     = f.label :body
+    br
     = f.text_area :body
-  p= f.submit 'Ask'
+    br
+    = f.submit 'Ask'
