@@ -12,6 +12,7 @@ window.jQuery = $;
 window.$ = $;
 
 import "./answers"
+import "./questions"
 
 Rails.start()
 Turbolinks.start()

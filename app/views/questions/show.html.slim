@@ -1,10 +1,29 @@
-h1= @question.title
-p= @question.body
+.question
+  .question-title
+    h1= question.title
 
-- if @question.author == current_user
-  = link_to 'Delete question', question_path(@question), method: :delete
+  .question-body
+    p= question.body
+
+  .question-control
+    - if question.author == current_user
+      = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+
+      p
+        = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" }, local: false do |f|
+          = f.label :title
+          br
+          = f.text_field :title
+          br
+          = f.label :body
+          br
+          = f.text_area :body
+          br
+          = f.submit 'Save'
+
+      = link_to 'Delete question', question_path(question), method: :delete
 
 = render 'answers/form'
 
 .answers
-  = render @question.answers
+  = render question.answers
