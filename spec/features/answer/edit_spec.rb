@@ -16,12 +16,9 @@ feature 'User can edit their answer', %q{
   end
 
   describe 'Authenticated user', js: true do
-    background do
+    scenario 'tries to edit their answer' do
       sign_in(users.first)
       visit question_path(question)
-    end
-
-    scenario 'tries to edit their answer' do
       click_on 'Edit'
 
       within '.answers' do
@@ -35,6 +32,14 @@ feature 'User can edit their answer', %q{
     end
 
     scenario 'tries to edit their answer with errors'
-    scenario "tries to edit someone else's answer"
+
+    scenario "cannot edit someone else's answers" do
+      sign_in(users.last)
+      visit question_path(question)
+
+      within '.answers' do
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
 end

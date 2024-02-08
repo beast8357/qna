@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answer.update(answer_params)
+    answer.update(answer_params) if answer.author == current_user
   end
 
   def destroy
