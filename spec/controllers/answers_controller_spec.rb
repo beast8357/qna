@@ -55,13 +55,13 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, author: user) }
 
     it 'deletes the answer' do
-      expect { delete :destroy, params: { question_id: question, id: answer } }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, params: { question_id: question, id: answer }, format: :js }.to change(Answer, :count).by(-1)
     end
 
-    it 'redirects to the question path' do
-      delete :destroy, params: { question_id: question, id: answer }
+    it "renders destoy template" do
+      delete :destroy, params: { question_id: question, id: answer }, format: :js
 
-      expect(response).to redirect_to question_path(question)
+      expect(response).to render_template :destroy
     end
   end
 
