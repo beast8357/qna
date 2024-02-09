@@ -36,7 +36,23 @@ feature 'User can edit their question', %q{
       end
     end
 
-    scenario 'tries to edit their question with errors'
+    scenario 'tries to edit their question with errors' do
+      visit question_path(question_1)
+      click_on 'Edit question'
+
+      within '.question' do
+        fill_in 'Title', with: ''
+        fill_in 'Body', with: ''
+        click_on 'Save'
+
+        expect(page).to have_content "Title can't be blank"
+        expect(page).to have_content "Body can't be blank"
+        expect(page).to_not have_content 'edited title'
+        expect(page).to_not have_content 'edited body'
+        expect(page).to have_selector 'input'
+        expect(page).to have_selector 'textarea'
+      end
+    end
 
     scenario "tries to edit someone else's question" do
       visit question_path(question_2)
