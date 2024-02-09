@@ -31,7 +31,20 @@ feature 'User can edit their answer', %q{
       end
     end
 
-    scenario 'tries to edit their answer with errors'
+    scenario 'tries to edit their answer with errors' do
+      sign_in(users.first)
+      visit question_path(question)
+      click_on 'Edit'
+
+      within '.answers' do
+        fill_in 'Your answer', with: ''
+        click_on 'Save'
+
+        expect(page).to have_content "Body can't be blank"
+        expect(page).to have_content answer.body
+        expect(page).to have_selector 'textarea'
+      end
+    end
 
     scenario "cannot edit someone else's answers" do
       sign_in(users.last)
