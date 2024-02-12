@@ -22,6 +22,11 @@ class AnswersController < ApplicationController
     @answer.destroy if @answer.author == current_user
   end
 
+  def best
+    @answer = answer
+    @answer.set_the_best if current_question.author == current_user
+  end
+
   private
 
   helper_method :current_question, :answer
