@@ -4,6 +4,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  scope :sort_by_best, -> { order(best: :desc) }
+
   def set_the_best
     Answer.transaction do
       Answer.where(question_id: question_id, best: true).update_all(best: false)
