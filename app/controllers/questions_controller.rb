@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = question.answers.new
-    @answers = question.answers
   end
 
   def new
@@ -21,23 +20,19 @@ class QuestionsController < ApplicationController
     @question.author = current_user
 
     if @question.save
-      redirect_to @question, notice: 'Your question has been successfully created.'
+      redirect_to @question
     else
       render :new
     end
   end
 
   def update
-    if question.update(question_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    question.update(question_params) if question.author == current_user
   end
 
   def destroy
     question.destroy
-    redirect_to questions_path, notice: 'The question has been successfully deleted.'
+    redirect_to questions_path
   end
 
   private

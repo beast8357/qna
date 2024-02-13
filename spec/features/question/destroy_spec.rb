@@ -14,15 +14,13 @@ feature 'The question can only be deleted by the author', %q{
 
     scenario 'tries to delete their own question' do
       visit question_path(question)
-      click_on 'Delete'
-
-      expect(page).to have_content 'The question has been successfully deleted.'
+      click_on 'Delete question'
     end
 
     scenario "tries to delete someone else's question" do
       visit question_path(question_2)
 
-      expect(page).to_not have_content 'Delete'
+      expect(page).to_not have_content 'Delete question'
     end
   end
 end

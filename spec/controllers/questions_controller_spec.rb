@@ -72,38 +72,51 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { login(user) }
+    context 'Authenticated user' do
+      before { login(user) }
 
-    context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(assigns(:question)).to eq question
+      context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+          question.reload
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'redirects to updated question' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(response).to redirect_to question
+        end
       end
 
-      it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
-        question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
-      end
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
+        
+        it 'does not change question' do
+          question.reload
+          expect(question.title).to eq 'MyString'
+          expect(question.body).to eq 'MyText'
+        end
 
-      it 'redirects to updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question
+        it 'renders update view' do
+          expect(response).to render_template :update
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
-      
-      it 'does not change question' do
-        question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+    context 'Unauthenticated user' do
+      it "does not changes the question's attributes" do
+        expect { patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } } }.to_not change(question, :body)
       end
 
-      it 'it re-renders edit view' do
-        expect(response).to render_template :edit
+      it 'redirects to sign in page' do
+        patch :update, params: {id: question, question: {title: 'new title', body: 'new body'}}
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

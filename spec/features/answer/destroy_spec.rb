@@ -5,26 +5,30 @@ feature 'The answer can only be deleted by the author', %q{
   And an authenticated user
   I'd like to be the only one who can delete my answers
 } do
-  given(:users) { create_list(:user, 2) }
+  given!(:users) { create_list(:user, 3) }
   given(:question) { create(:question, author: users.first) }
-  given(:question_2) { create(:question, author: users.last) }
-  given(:answer) { create(:answer, question: question, author: users.first) }
-  given(:answer_2) { create(:answer, question: question, author: users.last) }
+  given!(:answer_1) { create(:answer, question: question, author: users[0]) }
+  given!(:answer_2) { create(:answer, question: question, author: users[1]) }
 
-  describe 'User' do
-    background { sign_in(users.first) }
-
+  describe 'Authenticated user', js: true do
     scenario 'tries to delete their own answer' do
-      visit question_answer_path(question, answer)
-      click_on 'Delete'
+      sign_in(users[0])
+      visit question_path(question)
 
-      expect(page).to have_content 'The answer has been successfully deleted.'
+      within '.answers' do
+        click_on 'Delete'
+
+        expect(page).to_not have_link 'Delete'
+      end
     end
 
-    scenario "tries to delete someone else's answer" do
-      visit question_answer_path(question, answer_2)
-      
-      expect(page).to_not have_content 'Delete'
+    scenario "cannot delete someone else's answer" do
+      sign_in(users[2])
+      visit question_path(question)
+
+      within '.answers' do
+        expect(page).to_not have_content 'Delete'
+      end
     end
   end
 end

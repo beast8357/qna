@@ -8,19 +8,23 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = current_question.answers.new(answer_params)
-    @answer.author = current_user
+    @question = current_question
+    @answer = @question.answers.create(answer_params.merge(author: current_user))
+  end
 
-    if @answer.save
-      redirect_to question_path(current_question), notice: 'Your answer has been successfully created.'
-    else
-      redirect_to current_question, alert: "Body can't be blank."
-    end
+  def update
+    @answer = answer
+    @answer.update(answer_params) if @answer.author == current_user
   end
 
   def destroy
-    answer.destroy
-    redirect_to question_path(current_question), notice: 'The answer has been successfully deleted.'
+    @answer = current_question.answers.find(params[:id])
+    @answer.destroy if @answer.author == current_user
+  end
+
+  def best
+    @answer = answer
+    @answer.set_the_best if current_question.author == current_user
   end
 
   private
