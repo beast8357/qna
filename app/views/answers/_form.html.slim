@@ -5,5 +5,8 @@ p
     = f.label :body, 'Your answer'
     br
     = f.text_area :body
-    br
+    p
+      = f.label :files
+      br
+      = f.file_field :files, multiple: true
     = f.submit 'Answer'
