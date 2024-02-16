@@ -7,10 +7,15 @@
   .question-body
     p= question.body
 
-  p
+  .question-files
     - if question.files.attached?
-      - question.files.each do |file|
-        li= link_to file.filename.to_s, url_for(file)
+      p
+        - question.files.each do |file|
+          li.attachment id="file-#{file.id}"
+            = link_to file.filename.to_s, url_for(file)
+            br
+            - if question.author == current_user
+              = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
   .question-control
     - if question.author == current_user
