@@ -7,8 +7,8 @@
   .question-body
     p= question.body
 
-  .question-files
-    - if question.files.attached?
+  - if question.files.attached?
+    .question-files
       p
         - question.files.each do |file|
           li.attachment id="file-#{file.id}"

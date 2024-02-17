@@ -55,7 +55,7 @@ feature 'User can edit their answer', %q{
       end
     end
 
-    scenario 'can attach file when editing the answer' do
+    scenario 'can attach files when editing the answer' do
       sign_in(users.first)
       visit question_path(question)
       click_on 'Edit'
@@ -68,6 +68,22 @@ feature 'User can edit their answer', %q{
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'can delete files attached to the answer' do
+      sign_in(users.first)
+      visit question_path(question)
+      click_on 'Edit'
+
+      within '.answers' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+      end
+
+      within '.answer-files' do
+        first('.attachment').click_on 'Delete file'
+        expect(page).to_not have_link 'rails_helper.rb'
       end
     end
   end
