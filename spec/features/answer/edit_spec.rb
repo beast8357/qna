@@ -79,9 +79,7 @@ feature 'User can edit their answer', %q{
       within '.answers' do
         attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
-      end
 
-      within '.answer-files' do
         first('.attachment').click_on 'Delete file'
         expect(page).to_not have_link 'rails_helper.rb'
       end

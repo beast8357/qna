@@ -85,9 +85,7 @@ feature 'User can edit their question', %q{
       within '.question' do
         attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
-      end
 
-      within '.question-files' do
         first('.attachment').click_on 'Delete file'
         expect(page).to_not have_link 'rails_helper.rb'
       end
