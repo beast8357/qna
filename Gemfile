@@ -14,12 +14,14 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bootstrap', '~> 5.3.2'
 gem 'slim-rails'
 gem 'devise'
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 6.1.0'
   gem 'factory_bot_rails'
   gem 'rack-mini-profiler', '~> 2.0'
+  gem 'dotenv-rails'
 end
 
 group :development do

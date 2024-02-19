@@ -59,5 +59,36 @@ feature 'User can edit their question', %q{
 
       expect(page).to_not have_link 'Edit question'
     end
+
+    scenario 'can attach files when editing the question' do
+      visit question_path(question_1)
+      click_on 'Edit question'
+
+      within '.question' do
+        fill_in 'Title', with: 'edited title'
+        fill_in 'Body', with: 'edited body'
+
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_content 'edited title'
+        expect(page).to have_content 'edited body'
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'can delete files attached to the question' do
+      visit question_path(question_1)
+      click_on 'Edit question'
+
+      within '.question' do
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        first('.attachment').click_on 'Delete file'
+        expect(page).to_not have_link 'rails_helper.rb'
+      end
+    end
   end
 end
