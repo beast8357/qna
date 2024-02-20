@@ -16,6 +16,13 @@
           - if question.author == current_user
             = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
+  - if question.links.any?
+    .links
+      p Links:
+      ul
+        - question.links.each do |link|
+          li= link_to link.name, link.url
+
   .question-control
     - if question.author == current_user
       = link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
