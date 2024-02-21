@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
   has_many :answers, -> { sort_by_best }, dependent: :destroy
-  has_many :links, dependent: :destroy
+  has_many :links, dependent: :destroy, as: :linkable
 
   has_many_attached :files
 
