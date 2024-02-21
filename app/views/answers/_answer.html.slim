@@ -11,12 +11,14 @@
         br
 
       - if answer.files.attached?
+        p Files:
         - answer.files.each do |file|
-          li.attachment id="file-#{file.id}"
-            = link_to file.filename.to_s, url_for(file)
-            br
-            - if answer.author == current_user
-              = link_to 'Delete file', file_path(file), method: :delete, remote: true
+          ul
+            li.attachment id="file-#{file.id}"
+              = link_to file.filename.to_s, url_for(file)
+              br
+              - if answer.author == current_user
+                = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
       - if answer.links.any?
         .links
