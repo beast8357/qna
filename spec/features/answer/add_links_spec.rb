@@ -16,12 +16,14 @@ feature 'User can add links to their answer', %q{
     end
 
     scenario 'can add links when creating an answer' do
-      fill_in 'Your answer', with: 'Some answer'
+      within '.answer-form' do
+        fill_in 'Your answer', with: 'Some answer'
 
-      fill_in 'Link name', with: 'My gist'
-      fill_in 'Url', with: gist_url
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: gist_url
 
-      click_on 'Answer'
+        click_on 'Answer'
+      end
 
       within '.answers' do
         expect(page).to have_link 'My gist', href: gist_url
