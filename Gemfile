@@ -16,6 +16,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'aws-sdk-s3', require: false
 gem 'cocoon'
+gem 'validate_url'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
