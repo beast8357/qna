@@ -19,11 +19,8 @@
               = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
   - if question.links.any?
-    .links
-      p Links:
-      ul
-        - question.links.each do |link|
-          li= link_to link.name, link.url
+    .question-links
+      = render 'shared/links', resource: question, action: nil
 
   .question-control
     - if question.author == current_user

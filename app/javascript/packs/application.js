@@ -15,6 +15,7 @@ window.$ = $;
 
 import "./answers"
 import "./questions"
+import "./gists"
 
 Rails.start()
 Turbolinks.start()

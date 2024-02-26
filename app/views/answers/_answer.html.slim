@@ -21,11 +21,8 @@
                 = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
       - if answer.links.any?
-        .links
-          p Links:
-          ul
-            - answer.links.each do |link|
-              li= link_to link.name, link.url
+        .answer-links
+          = render 'shared/links', resource: answer, action: action
 
       - if answer.question.author == current_user && !answer.best
         = link_to 'Mark as the best', best_question_answer_path(answer.question, answer), remote: true, method: :patch

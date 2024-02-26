@@ -57,5 +57,14 @@ feature 'User can add links to their answer', %q{
         expect(page).to_not have_content 'Url'
       end
     end
+
+    scenario 'can add gists when asking a question' do
+      click_on 'Answer'
+
+      within_frame find("iframe.gist-content") do
+        expect(page).to have_content 'gistfile1.txt'
+        expect(page).to have_content 'Hello world'
+      end
+    end
   end
 end

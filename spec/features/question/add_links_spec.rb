@@ -42,5 +42,14 @@ feature 'User can add links to their question', %q{
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_link 'Google', href: google_url
     end
+
+    scenario 'can add gists when asking a question' do
+      click_on 'Ask'
+
+      within_frame find("iframe.gist-content") do
+        expect(page).to have_content 'gistfile1.txt'
+        expect(page).to have_content 'Hello world'
+      end
+    end
   end
 end
