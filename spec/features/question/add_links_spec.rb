@@ -71,5 +71,19 @@ feature 'User can add links to their question', %q{
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_link 'GitHub', href: 'https://github.com/'
     end
+
+    scenario 'can delete links when editing the question' do
+      click_on 'Ask'
+
+      click_on 'Edit question'
+
+      within '.question-control' do
+        click_on 'Remove url'
+      end
+
+      click_on 'Save'
+
+      expect(page).to_not have_link 'My gist', href: gist_url
+    end
   end
 end
