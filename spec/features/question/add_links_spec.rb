@@ -51,5 +51,25 @@ feature 'User can add links to their question', %q{
         expect(page).to have_content 'Hello world'
       end
     end
+
+    scenario 'can add links when editing the question' do
+      click_on 'Ask'
+
+      click_on 'Edit question'
+
+      within '.question-control' do
+        click_on 'Add link'
+      end
+
+      within all('.nested-fields').last do
+        fill_in 'Link name', with: 'GitHub'
+        fill_in 'Url', with: 'https://github.com/'
+      end
+
+      click_on 'Save'
+
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'GitHub', href: 'https://github.com/'
+    end
   end
 end
