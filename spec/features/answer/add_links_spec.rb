@@ -86,5 +86,19 @@ feature 'User can add links to their answer', %q{
         expect(page).to have_link 'GitHub', href: 'https://github.com/'
       end
     end
+
+    scenario 'can delete links when editing the answer' do
+      click_on 'Answer'
+
+      click_on 'Edit'
+
+      within '.answer-edit' do
+        click_on 'Remove url'
+      end
+
+      click_on 'Save'
+
+      expect(page).to_not have_link 'My gist', href: gist_url
+    end
   end
 end
