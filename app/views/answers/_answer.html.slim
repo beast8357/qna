@@ -35,13 +35,19 @@
 
         div class=["answer-error-#{answer.id}"]
 
-        p
-          = form_with model: [answer.question, answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
-            = f.label :body, 'Your answer'
-            br
-            = f.text_area :body
-            p
-              = f.label :files
+        .answer-edit
+          p
+            = form_with model: [answer.question, answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+              = f.label :body, 'Your answer'
               br
-              = f.file_field :files, multiple: true, direct_upload: true
-            = f.submit 'Save'
+              = f.text_area :body
+              p
+                = f.label :files
+                br
+                = f.file_field :files, multiple: true, direct_upload: true
+              p
+                #links
+                  = f.fields_for :links do |link|
+                  .links
+                    = link_to_add_association 'Add link', f, :links, partial: 'links/link_fields'
+              = f.submit 'Save'

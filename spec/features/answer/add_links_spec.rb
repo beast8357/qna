@@ -66,5 +66,25 @@ feature 'User can add links to their answer', %q{
         expect(page).to have_content 'Hello world'
       end
     end
+
+    scenario 'can add links when editing their answer' do
+      click_on 'Answer'
+
+      click_on 'Edit'
+
+      within '.answer-edit' do
+        click_on 'Add link'
+
+        within all('.nested-fields').last do
+          fill_in 'Link name', with: 'GitHub'
+          fill_in 'Url', with: 'https://github.com/'
+        end
+
+        click_on 'Save'
+
+        expect(page).to have_link 'My gist', href: gist_url
+        expect(page).to have_link 'GitHub', href: 'https://github.com/'
+      end
+    end
   end
 end
