@@ -58,7 +58,7 @@ feature 'User can add links to their answer', %q{
       end
     end
 
-    scenario 'can add gists when asking a question' do
+    scenario 'can add gists when creating an answer' do
       click_on 'Answer'
 
       within_frame find("iframe.gist-content") do
@@ -70,7 +70,9 @@ feature 'User can add links to their answer', %q{
     scenario 'can add links when editing their answer' do
       click_on 'Answer'
 
-      click_on 'Edit'
+      within '.answers' do
+        click_on 'Edit'
+      end
 
       within '.answer-edit' do
         click_on 'Add link'
@@ -81,16 +83,18 @@ feature 'User can add links to their answer', %q{
         end
 
         click_on 'Save'
-
-        expect(page).to have_link 'My gist', href: gist_url
-        expect(page).to have_link 'GitHub', href: 'https://github.com/'
       end
+
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'GitHub', href: 'https://github.com/'
     end
 
     scenario 'can delete links when editing the answer' do
       click_on 'Answer'
 
-      click_on 'Edit'
+      within '.answers' do
+        click_on 'Edit'
+      end
 
       within '.answer-edit' do
         click_on 'Remove url'
