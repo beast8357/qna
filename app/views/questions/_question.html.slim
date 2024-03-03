@@ -7,6 +7,13 @@
   .question-body
     p= question.body
 
+  - if question.reward.present?
+    b Reward:
+    p
+      = image_tag url_for(question.reward.image), size: '50'
+      br
+      = question.reward.title
+
   - if question.files.attached?
     p Files:
     p
