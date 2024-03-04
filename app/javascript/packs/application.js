@@ -8,11 +8,14 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "jquery"
+import "@nathanvda/cocoon"
+
 window.jQuery = $;
 window.$ = $;
 
 import "./answers"
 import "./questions"
+import "./gists"
 
 Rails.start()
 Turbolinks.start()

@@ -5,19 +5,26 @@
         .best_answer
           h4= 'The best answer: '
           = answer.body
+          br
       - else
         = answer.body
+        br
 
       - if answer.files.attached?
+        p Files:
         - answer.files.each do |file|
-          li.attachment id="file-#{file.id}"
-            = link_to file.filename.to_s, url_for(file)
-            br
-            - if answer.author == current_user
-              = link_to 'Delete file', file_path(file), method: :delete, remote: true
+          ul
+            li.attachment id="file-#{file.id}"
+              = link_to file.filename.to_s, url_for(file)
+              br
+              - if answer.author == current_user
+                = link_to 'Delete file', file_path(file), method: :delete, remote: true
+
+      - if answer.links.any?
+        .answer-links
+          = render 'shared/links', resource: answer, action: action
 
       - if answer.question.author == current_user && !answer.best
-        br
         = link_to 'Mark as the best', best_question_answer_path(answer.question, answer), remote: true, method: :patch
 
       - if user_signed_in? && answer.author == current_user
@@ -28,13 +35,20 @@
 
         div class=["answer-error-#{answer.id}"]
 
-        p
-          = form_with model: [answer.question, answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
-            = f.label :body, 'Your answer'
-            br
-            = f.text_area :body
-            p
-              = f.label :files
+        .answer-edit
+          p
+            = form_with model: [answer.question, answer], class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+              = f.label :body, 'Your answer'
               br
-              = f.file_field :files, multiple: true, direct_upload: true
-            = f.submit 'Save'
+              = f.text_area :body
+              p
+                = f.label :files
+                br
+                = f.file_field :files, multiple: true, direct_upload: true
+              p
+                #links
+                  = f.fields_for :links do |link|
+                    = render 'links/link_fields', f: link
+                  .links
+                    = link_to_add_association 'Add link', f, :links, partial: 'links/link_fields'
+              = f.submit 'Save'

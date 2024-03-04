@@ -1,7 +1,8 @@
 .question-container
   = render question
 
-= render 'answers/form'
+.answer-form
+  = render 'answers/form'
 
 .answers
-  = render question.answers
+  = render question.answers, action: :show

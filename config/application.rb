@@ -29,7 +29,7 @@ module Qna
     end
 
     if ["development", "test"].include? ENV["RAILS_ENV"]
-      Dotenv::Railtie.load
+      Dotenv::Rails.load
     end
   end
 end
