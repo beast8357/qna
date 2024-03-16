@@ -8,6 +8,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.4.4",
     "add": "^2.0.6",
+    "bootstrap-icons": "^1.11.3",
     "fsevents": "^2.3.3",
     "jquery": "^3.7.1",
     "turbolinks": "^5.2.0",
