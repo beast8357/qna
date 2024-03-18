@@ -35,6 +35,17 @@ feature 'User can vote for the question', %q{
 
       expect(question.reload.votes_sum).to eq(-1)
     end
+
+    scenario 'cannot vote for their own question' do
+      own_question = create(:question, author: user)
+      visit question_path(own_question)
+
+      within '.question' do
+        find('.like').click
+      end
+
+      expect(page).to have_content "Author can't vote"
+    end
   end
 
   describe 'Unauthenticated user', js: true do
