@@ -8,6 +8,7 @@ RSpec.describe Vote, type: :model do
   it { should validate_presence_of(:user) }
 
   let(:user) { create(:user) }
+  let(:user_2) { create(:user) }
   let(:question) { create(:question, author: user) }
 
   describe 'author_cant_vote validation' do
@@ -16,6 +17,16 @@ RSpec.describe Vote, type: :model do
 
       expect(vote).to_not be_valid
       expect(vote.errors[:vote]).to include("Author can't vote")
+    end
+  end
+
+  describe 'user_cant_vote_twice validation' do
+    it 'prevents the user from voting twice' do
+      create(:vote, voteable: question, user: user_2)
+      vote_2 = build(:vote, voteable: question, user: user_2)
+
+      expect(vote_2).to_not be_valid
+      expect(vote_2.errors[:vote]).to include("User can't vote twice")
     end
   end
 end
