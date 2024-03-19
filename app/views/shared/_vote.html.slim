@@ -1,0 +1,29 @@
+- if current_user.present?
+  div.votes
+    div.mb-3
+      = link_to like_question_path(@question),
+                method: :patch,
+                class: 'btn btn-outline-success like me-2',
+                remote: true,
+                data: { type: 'json' } do
+        i.bi.bi-hand-thumbs-up
+
+      span.votes-sum.me-2.fs-5(class="#{'text-success' if question.votes_sum > 0} #{'text-danger' if question.votes_sum < 0}")
+        = question.votes_sum
+
+      = link_to dislike_question_path(@question),
+                method: :patch,
+                class: 'btn btn-outline-danger dislike me-2',
+                remote: true,
+                data: { type: 'json' } do
+        i.bi.bi-hand-thumbs-down
+
+      - classes = 'btn btn-outline-primary revote me-2'
+      - classes += ' hidden' unless @question.voted_by?(current_user)
+
+      = link_to 'Revote',
+                revote_question_path(@question),
+                method: :patch,
+                class: classes,
+                remote: true,
+                data: { type: 'json' }

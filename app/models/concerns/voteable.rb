@@ -8,4 +8,8 @@ module Voteable
   def votes_sum
     votes.sum(:value)
   end
+
+  def voted_by?(user)
+    votes.exists?(user_id: user.id)
+  end
 end

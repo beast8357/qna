@@ -2,7 +2,7 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_voteable, only: %w(like dislike)
+    before_action :set_voteable, only: %w(like dislike revote)
   end
 
   def like
@@ -11,6 +11,15 @@ module Voted
 
   def dislike
     vote(-1)
+  end
+
+  def revote
+    if @voteable.voted_by?(current_user)
+      destroy_vote
+    else
+      render json: { error: "You haven't voted for #{kontroller_name}" },
+             status: :unprocessable_entity
+    end
   end
 
   private
@@ -29,10 +38,25 @@ module Voted
 
   def set_voteable
     @voteable = model_klass.find(params[:id])
-    instance_variable_set("@#{controller_name.singularize}", @voteable)
+    instance_variable_set("@#{kontroller_name}", @voteable)
   end
 
   def model_klass
     controller_name.classify.constantize
+  end
+
+  def kontroller_name
+    controller_name.singularize
+  end
+
+  def destroy_vote
+    @vote = @voteable.votes.find_by(user_id: current_user)
+
+    if @vote&.destroy
+      render json: { vote_sum: @voteable.votes_sum }
+    else
+      render json: { error: "You can't revote for #{kontroller_name}" },
+             status: :unprocessable_entity
+    end
   end
 end
