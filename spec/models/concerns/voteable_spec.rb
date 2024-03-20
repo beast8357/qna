@@ -3,7 +3,7 @@ require 'rails_helper'
 shared_examples_for 'voteable' do
   it { should have_many(:votes).dependent(:destroy) }
 
-  let!(:voteable) { described_class.to_s.underscore.to_sym }
+  let!(:voteable) { create(described_class.to_s.underscore.to_sym) }
 
   describe '#votes_sum' do
     it 'checks for votes: 1, -1, 1' do

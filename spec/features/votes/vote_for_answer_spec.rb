@@ -1,12 +1,14 @@
 require 'rails_helper'
 
-feature 'User can vote for the question', %q{
-  In order to rate the question
+feature 'User can vote for the answer', %q{
+  In order to rate the answer
   As an authenticated user
-  I'd like to be able to vote for the question
+  I'd like to be able to vote for the answer
 } do
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
+  given!(:answer) { create(:answer, question: question) }
+  given!(:own_answer) { create(:answer, question: question, author: user) }
 
   describe 'Authenticated user', js: true do
     background do
@@ -14,41 +16,38 @@ feature 'User can vote for the question', %q{
       visit question_path(question)
     end
 
-    scenario 'can like the question' do
-      within '.question' do
+    scenario 'can like the answer' do
+      within "#answer_#{answer.id}" do
         find('.like').click
 
         votes_sum_element = find('.votes-sum')
-        expect(votes_sum_element).to have_text(1)
+        expect(votes_sum_element).to have_text('1')
       end
 
-      expect(question.reload.votes_sum).to eq(1)
+      expect(answer.reload.votes_sum).to eq(1)
     end
 
-    scenario 'can dislike the question' do
-      within '.question' do
+    scenario 'can dislike the answer' do
+      within "#answer_#{answer.id}" do
         find('.dislike').click
 
         votes_sum_element = find('.votes-sum')
-        expect(votes_sum_element).to have_text(-1)
+        expect(votes_sum_element).to have_text('-1')
       end
 
-      expect(question.reload.votes_sum).to eq(-1)
+      expect(answer.reload.votes_sum).to eq(-1)
     end
 
-    scenario 'cannot vote for their own question' do
-      own_question = create(:question, author: user)
-      visit question_path(own_question)
-
-      within '.question' do
+    scenario 'cannot vote for their own answer' do
+      within "#answer_#{own_answer.id}" do
         find('.like').click
       end
 
       expect(page).to have_content "Author can't vote"
     end
 
-    scenario 'can revote for the question' do
-      within '.question' do
+    scenario 'can revote for the answer' do
+      within "#answer_#{answer.id}" do
         find('.dislike').click
         find('.revote').click
         find('.like').click
@@ -57,17 +56,17 @@ feature 'User can vote for the question', %q{
         expect(votes_sum_element).to have_text('1')
       end
 
-      expect(question.reload.votes_sum).to eq(1)
+      expect(answer.reload.votes_sum).to eq(1)
     end
 
     scenario 'cannot see the revote button if did not vote' do
-      within '.question' do
+      within "#answer_#{answer.id}" do
         expect(page).to_not have_selector('.revote')
       end
     end
 
     scenario 'cannot see the revote button after clicking on it' do
-      within '.question' do
+      within "#answer_#{answer.id}" do
         find('.dislike').click
         find('.revote').click
 
@@ -80,19 +79,19 @@ feature 'User can vote for the question', %q{
     background { visit question_path(question) }
 
     scenario 'cannot see the like button' do
-      within '.question' do
+      within "#answer_#{answer.id}" do
         expect(page).to_not have_selector('.like')
       end
     end
 
-    scenario 'cannot see the dislike button' do
-      within '.question' do
+    scenario 'cannot see the dislike' do
+      within "#answer_#{answer.id}" do
         expect(page).to_not have_selector('.dislike')
       end
     end
 
     scenario 'cannot see the revote button' do
-      within '.question' do
+      within "#answer_#{answer.id}" do
         expect(page).to_not have_selector('.revote')
       end
     end
