@@ -1,5 +1,5 @@
 - if answer.id
-  div id="answer_#{answer.id}"
+  div.answer id="answer_#{answer.id}"
     p
       - if answer.best
         .best_answer
@@ -9,6 +9,8 @@
       - else
         = answer.body
         br
+
+      = render 'shared/vote', voteable: answer
 
       - if answer.files.attached?
         p Files:

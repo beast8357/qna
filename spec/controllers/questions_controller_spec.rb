@@ -143,4 +143,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to redirect_to questions_path
     end
   end
+
+  it_behaves_like 'voted'
 end
