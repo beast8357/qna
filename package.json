@@ -10,6 +10,7 @@
     "add": "^2.0.6",
     "bootstrap-icons": "^1.11.3",
     "fsevents": "^2.3.3",
+    "handlebars": "^4.7.8",
     "jquery": "^3.7.1",
     "turbolinks": "^5.2.0",
     "webpack": "^4.46.0",
