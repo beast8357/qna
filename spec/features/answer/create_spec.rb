@@ -47,4 +47,32 @@ feature 'Authenticated user can answer the question', %q{
       click_on 'Answer'
     end
   end
+
+  context 'multiple sessions', js: true do
+    scenario "answer appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Your answer', with: 'Some answer'
+        click_on 'Answer'
+
+        within '.answers' do
+          expect(page).to have_content 'Some answer'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content 'Some answer'
+        end
+      end
+    end
+  end
 end

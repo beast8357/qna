@@ -12,6 +12,10 @@ class QuestionsController < ApplicationController
   def show
     @answer = question.answers.new
     @answer.links.build
+    gon.push({
+      question_id: @question.id,
+      sid: session&.id&.public_id
+    })
   end
 
   def new
