@@ -28,18 +28,18 @@ feature 'User can leave comments on questions', %q{
 
         Capybara.using_session('user') do
           within '.question' do
-            fill_in 'You comment', with: 'question comment'
+            fill_in 'Your comment', with: 'question comment'
             click_on 'Save'
           end
 
-          within '.question' '.comments' do
+          within '.question .comments' do
             expect(page).to have_content("Comment by #{user.email}")
             expect(page).to have_content('question comment')
           end
         end
 
         Capybara.using_session('guest') do
-          within '.question' '.comments' do
+          within '.question .comments' do
             expect(page).to have_content("Comment by #{user.email}")
             expect(page).to have_content('question comment')
           end
