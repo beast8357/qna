@@ -11,8 +11,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:voteable] do
-    resources :answers, concerns: [:voteable] do
+  concern :commentable do
+    member do
+      patch :add_comment
+    end
+  end
+
+  resources :questions, concerns: %i[voteable commentable] do
+    resources :answers, concerns: %i[voteable commentable] do
       member do
         patch :best
       end
