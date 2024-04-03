@@ -29,7 +29,7 @@ feature 'User can leave comments on questions', %q{
         Capybara.using_session('user') do
           within '.question' do
             fill_in 'Your comment', with: 'question comment'
-            click_on 'Save'
+            click_on 'Comment'
           end
 
           within '.question .comments' do
