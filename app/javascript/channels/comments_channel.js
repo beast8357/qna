@@ -1,15 +1,30 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("CommentsChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-  },
+$(document).on('turbolinks:load', function() {
+  const commentTemplate = require('../templates/comment.hbs')
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-  },
+  consumer.subscriptions.create("CommentsChannel", {
+    connected() {
+      console.log('Connected to comments_channel')
+    },
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
-  }
-});
+    disconnected() {
+      // Called when the subscription has been terminated by the server
+    },
+
+    received(data) {
+      if (gon.sid === data.sid) return
+
+      const commentable_type = data.commentable_type
+      const commentFullTemplate = commentTemplate(data)
+
+      switch (commentable_type) {
+        case 'Question':
+          $('.question .comments').append(commentFullTemplate)
+          break
+        case 'Answer':
+        default:
+      }
+    }
+  })
+})
