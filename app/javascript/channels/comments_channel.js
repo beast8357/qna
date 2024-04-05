@@ -23,6 +23,8 @@ $(document).on('turbolinks:load', function() {
           $('.question .comments').append(commentFullTemplate)
           break
         case 'Answer':
+          $('#answer_' + data.commentable_id + ' .comments').append(commentFullTemplate)
+          break
         default:
       }
     }
