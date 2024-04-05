@@ -2,7 +2,7 @@
   div.answer id="answer_#{answer.id}"
     p
       - if answer.best
-        .best_answer
+        .best-answer
           h4= 'The best answer: '
           = answer.body
           br
@@ -54,3 +54,5 @@
                   .links
                     = link_to_add_association 'Add link', f, :links, partial: 'links/link_fields'
               = f.submit 'Save'
+
+    = render 'shared/comments', resource: answer

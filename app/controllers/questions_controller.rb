@@ -1,7 +1,10 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[index show]
+
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.with_attached_files
@@ -10,6 +13,10 @@ class QuestionsController < ApplicationController
   def show
     @answer = question.answers.new
     @answer.links.build
+    gon.push({
+      question_id: @question.id,
+      sid: session&.id&.public_id
+    })
   end
 
   def new
@@ -54,5 +61,15 @@ class QuestionsController < ApplicationController
                                      files: [],
                                      links_attributes: [:id, :name, :url, :_destroy],
                                      reward_attributes: [:id, :title, :image, :_destroy])
+  end
+
+  def publish_question
+    return if question.errors.any?
+    ActionCable.server.broadcast("questions_channel", {
+      question: {
+        title: question.title,
+        url: url_for(question)
+      }
+    })
   end
 end

@@ -1,7 +1,10 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[show]
+
+  after_action :publish_answer, only: %i[create]
 
   def show
   end
@@ -45,5 +48,26 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body,
                                    files: [],
                                    links_attributes: [:id, :name, :url, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast("answers_channel_#{current_question.id}", broadcast_attributes)
+  end
+
+  def broadcast_attributes
+    votes = {
+      sum: @answer.votes_sum,
+      like_url: helpers.custom_polymorphic_vote_path(@answer, action: :like),
+      dislike_url: helpers.custom_polymorphic_vote_path(@answer, action: :dislike)
+    }
+
+    files = @answer.files.map { |file| { filename: file.filename.to_s, url: url_for(file) } }
+    links = @answer.links.map { |link| { name: link.name, url: link.url } }
+
+    {
+      answer: @answer.attributes.merge(votes: votes, files: files, links: links),
+      sid: session.id.public_id
+    }
   end
 end
