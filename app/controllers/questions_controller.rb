@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.with_attached_files
+    authorize @questions
   end
 
   def show
@@ -53,6 +54,7 @@ class QuestionsController < ApplicationController
 
   def question
     @question ||= params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new
+    authorize @question
   end
 
   def question_params
