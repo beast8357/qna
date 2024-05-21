@@ -19,14 +19,14 @@
             li.attachment id="file-#{file.id}"
               = link_to file.filename.to_s, url_for(file)
               br
-              - if answer.author == current_user
+              - if policy(answer).destroy?
                 = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
       - if answer.links.any?
         .answer-links
           = render 'shared/links', resource: answer, action: action
 
-      - if answer.question.author == current_user && !answer.best
+      - if policy(answer).best? && !answer.best
         = link_to 'Mark as the best', best_question_answer_path(answer.question, answer), remote: true, method: :patch
 
       - if user_signed_in? && answer.author == current_user

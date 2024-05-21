@@ -14,22 +14,27 @@ class AnswersController < ApplicationController
 
   def create
     @question = current_question
-    @answer = @question.answers.create(answer_params.merge(author: current_user))
+    @answer = @question.answers.build(answer_params.merge(author: current_user))
+    authorize @answer
+    @answer.save
   end
 
   def update
     @answer = answer
-    @answer.update(answer_params) if @answer.author == current_user
+    authorize @answer
+    @answer.update(answer_params)
   end
 
   def destroy
     @answer = current_question.answers.find(params[:id])
-    @answer.destroy if @answer.author == current_user
+    authorize @answer
+    @answer.destroy
   end
 
   def best
     @answer = answer
-    @answer.set_the_best if current_question.author == current_user
+    authorize @answer
+    @answer.set_the_best #if current_question.author == current_user
   end
 
   private
