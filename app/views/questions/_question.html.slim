@@ -24,7 +24,7 @@ div.question
           li.attachment id="file-#{file.id}"
             = link_to file.filename.to_s, url_for(file)
             br
-            - if policy(question).update?
+            - if policy(file.record).destroy?
               = link_to 'Delete file', file_path(file), method: :delete, remote: true
 
   - if question.links.any?
