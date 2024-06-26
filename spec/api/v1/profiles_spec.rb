@@ -19,7 +19,7 @@ describe 'Profiles API', type: :request do
 
         it_behaves_like 'fields returnable' do
           let(:user_item) { user }
-          let(:json_item) { json }
+          let(:json_item) { json['user'] }
         end
       end
     end
