@@ -45,6 +45,16 @@ describe 'Profiles API', type: :request do
           end
         end
       end
+
+      context 'user is not the admin' do
+        let(:user) { create(:user) }
+
+        before { get api_path, params: { access_token: access_token }, headers: headers }
+
+        it 'returns status 403' do
+          expect(response.status).to eq 403
+        end
+      end
     end
   end
 end

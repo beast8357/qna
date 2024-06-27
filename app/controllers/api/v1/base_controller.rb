@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Api::V1::BaseController < ApplicationController
+  include ActiveStorage::SetCurrent
+
+  protect_from_forgery with: :null_session
+
   before_action :doorkeeper_authorize!
 
   private
