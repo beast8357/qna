@@ -27,7 +27,9 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :questions, only: %i[index show]
+      resources :questions, only: %i[index show] do
+        resources :answers, only: %i[index show]
+      end
     end
   end
 
